@@ -1,3 +1,14 @@
+<?php
+session_start();
+
+if (isset($_SESSION["userid"]))
+{
+  echo "<h1>You're signed in!</h1>";
+  echo $_SESSION["userid"];
+  echo $_SESSION["userName"];
+  echo "<a href='includes/signout-inc.php'>Sign Out</a>";
+}
+?>
 <!doctype html>
 
 <html lang="en">
@@ -12,7 +23,7 @@
         <title>Sign In</title>
     </head>
 
-    <body>
+    <!-- <body>
         <nav class="navbar fixed-top navbar-light bg-light">
             <div class="container-fluid">
               <a class="navbar-brand" href="#">Fixed top</a>
@@ -56,5 +67,5 @@
                 </div>
             </div>
         </div>
-    </body>
+    </body> -->
 </html>
