@@ -97,7 +97,8 @@ function userNameExist($dbConnect, $userName)
     mysqli_stmt_close($stmt);
 }
 
-function createUser($dbConnect, $userFullName, $userEmail, $userName, $userPassword)
+//add create user here
+function registerUser($dbConnect, $userFullName, $userEmail, $userName, $userPassword)
 {
     $sql = "INSERT INTO tableusers (userFullName, userEmail, userName, userPassword) VALUES (?, ?, ?, ?);";
     $stmt = mysqli_stmt_init($dbConnect);

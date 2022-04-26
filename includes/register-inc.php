@@ -38,11 +38,11 @@ if (isset($_POST["submitRegister"]))
     //check if username exist in db
     if (userNameExist($dbConnect, $userName) !== false)
     {
-        header("location: ../register.html?error=passwordmismatch");
+        header("location: ../register.html?error=usernotexist");
         exit();
     }
 
-    createUser($dbConnect, $userFullName, $userEmail, $userName, $userPassword);
+    registerUser($dbConnect, $userFullName, $userEmail, $userName, $userPassword);
 }
 
 else
