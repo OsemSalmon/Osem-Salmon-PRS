@@ -1,6 +1,7 @@
+
 <template>
-  <UserCreate />
-  <UserList />
+<UserCreate />
+<UserList />
 </template>
 
 <script>
@@ -8,7 +9,8 @@ import UserCreate from '@/components/UserCreate.vue'
 import UserList from '@/components/UserList.vue'
 
 export default {
-  name: 'HomeView',
+   name: 'HomeView',
   components: { UserCreate, UserList }
 }
 </script>
+
