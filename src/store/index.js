@@ -28,10 +28,7 @@ export default createStore({
 
       try {
         await signInWithEmailAndPassword(auth, email, password)
-          commit('SET_USER', auth.currentUser)
-          router.push('/main')
-      } 
-      catch (error) {
+      } catch (error) {
         switch(error.code) {
           case 'auth/user-not-found':
             alert("User not found")
@@ -42,8 +39,13 @@ export default createStore({
           default:
             alert("Something went wrong")
         }
+
         return
       }
+
+      commit('SET_USER', auth.currentUser)
+
+      router.push('/home')
     },
 
     async register ({ commit}, details) {
@@ -78,11 +80,11 @@ export default createStore({
     },
 
     async logout ({ commit }) {
-      await signOut(auth).then(() => {
-        commit('CLEAR_USER')
-        alert('Successfully logged out');
-        this.$router.push('/login');
-      })
+      await signOut(auth)
+
+      commit('CLEAR_USER')
+
+      router.push('/login')
     },
 
     fetchUser ({ commit }) {

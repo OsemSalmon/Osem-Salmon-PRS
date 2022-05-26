@@ -1,14 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import HomeView from '../views/HomeView.vue'
 import { auth } from '@/firebase'
-import HomeView from '@/views/Home.vue'
+import Home from '@/views/Home.vue'
 import Edit from '@/views/EditView.vue'
-import Login from '@/views/Login-page.vue'
 
 const routes = [
   {
     path: '/',
-    name: 'default',
-    component: Login,
+    name: 'home',
+    component: HomeView,
+    meta: {
+      requiresAuth:true
+    }
   },
   {
     path: '/about',
@@ -27,16 +30,13 @@ const routes = [
     component: () => import('../views/Login-page.vue')
   },
   {
-    path: '/main',
+    path: '/home',
     name: 'HomeView',
-    component: HomeView,
-    meta: {
-      requiresAuth:true
-    }
+    component: Home
   },
   {
     path: '/edit/:id',
-    name: 'EditView',
+    name: 'Edit',
     component: Edit
   }
 ]
@@ -47,19 +47,18 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (auth.currentUser) {
-      next();
-    }
-    else{
-      next({
-        path: '/',
-      })
-    }
+  if (to.path === '/login' && auth.currentUser) {
+    next('/home')
+    return;
   }
-  else{
-    next();
+
+  if (to.matched.some(record => record.meta.requiresAuth) && !auth.currentUser) {
+    next('/login')
+    return;
   }
+
+  next();
 })
+
 
 export default router
