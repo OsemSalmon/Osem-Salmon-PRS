@@ -45,7 +45,7 @@ export default createStore({
 
       commit('SET_USER', auth.currentUser)
 
-      router.push('/')
+      router.push('/home')
     },
 
     async register ({ commit}, details) {
