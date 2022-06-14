@@ -59,9 +59,8 @@ addPatientInfo.addEventListener('submit', (e) => {
 
 })
 
-remove
 const deletePatientInfo = document.querySelector('.add')
-addPatientInfo.addEventListener('submit', (e) => {
+deletePatientInfo.addEventListener('submit', (e) => {
   e.preventDefault()
 })
 
