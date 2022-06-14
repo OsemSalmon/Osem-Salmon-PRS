@@ -1,7 +1,10 @@
 
 import { initializeApp } from "firebase/app"
 import { getAuth } from "firebase/auth"
-import { getFirestore, collection, getDocs } from "firebase/firestore"
+import { 
+  getFirestore, collection, getDocs,
+  addDoc
+ } from "firebase/firestore"
 import { onUnmounted } from "vue"
 
 
@@ -19,6 +22,7 @@ const app = initializeApp(firebaseConfig)
 
 //init auth
 const auth = getAuth(app)
+export { auth }
 
 //init firestore
 const db = getFirestore()
@@ -39,4 +43,25 @@ getDocs(colRef)
   console.log(err.message)
 })
 
-export { auth }
+
+//add
+const addPatientInfo = document.querySelector('.add')
+addPatientInfo.addEventListener('submit', (e) => {
+  e.preventDefault()
+  
+  addDoc(colRef, {
+    patientName: addPatientInfo.patientName.value,
+    patientIC: addPatientInfo.patientIC.value,
+  })
+  .then(() => {
+    addPatientInfo.reset()
+  })
+
+})
+
+remove
+const deletePatientInfo = document.querySelector('.add')
+addPatientInfo.addEventListener('submit', (e) => {
+  e.preventDefault()
+})
+
