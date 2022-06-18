@@ -3,7 +3,7 @@
     <ul>
       <li v-for="user in user" :key="user.id">
         <div class="details">
-          <h3>{{ user.fullname }}</h3>
+          <h3  @click="handleDelete(user)"> {{ user.fullname }}</h3>
           <p>{{ user.email }}</p>
         </div>
         <div class="icon">
@@ -19,13 +19,24 @@
 import CreateUserForm from '@/components/CreateUserForm'
 import getCollection from '../composables/getCollection'
 
+import { db } from '../firebase/config'
+import { doc, deleteDoc } from 'firebase/firestore'
+
 export default {
   name: 'Home',
   components: { CreateUserForm },
   setup() {
+    //get user info from collection
     const { documents: user } = getCollection('user')
     
-    return { user }
+    //delete user from collection
+    const handleDelete = (user) => {
+      const docRef = doc(db, 'user', user.id)
+
+      deleteDoc(docRef)
+    }
+
+    return { user, handleDelete }
   }
 }
 </script>
