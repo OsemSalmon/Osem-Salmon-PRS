@@ -2,24 +2,43 @@
   <div>
     <nav>
       <h1>OsemSalmonV3</h1>
+      <!-- <h4>{{ user.fullname }}</h4> -->
 
       <!-- for logged in users -->
       <div>
         <router-link to="/">Home</router-link>
-        <button>Logout</button>
+        <button @click="handleClick">Logout</button>
       </div>
       
       <!-- for logged out users -->
       <div>
         <router-link to="/login">Login</router-link>
-        <router-link to="/signup">Signup</router-link>
       </div>
+
+      
     </nav>
   </div>
 </template>
 
 <script>
+import { auth } from '../firebase/config'
+import { signOut } from '@firebase/auth'
+
+import getUserAuth from '../composables/getUserAuth'
+import getCollection from '../composables/getCollection'
+
 export default {
+  setup() {
+    const { userAuth } = getUserAuth()
+    
+    const { documents: user } = getCollection('user')
+
+    const handleClick = () => {
+      signOut(auth)
+    }
+
+    return { handleClick, userAuth, user }
+  }
 
 }
 </script>
