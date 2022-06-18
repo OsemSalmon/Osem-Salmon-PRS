@@ -6,8 +6,8 @@
           <h3  @click="handleDelete(user)"> {{ user.fullname }}</h3>
           <p>{{ user.email }}</p>
         </div>
-        <div class="icon">
-          <span class="material-icons">favorite</span>
+        <div :class="{ icon: true, admin: user.isadmin }" @click="handleUpdate(user)">
+          <span class="material-icons">verified_user</span>
         </div>
       </li>
     </ul>
@@ -20,7 +20,7 @@ import CreateUserForm from '@/components/CreateUserForm'
 import getCollection from '../composables/getCollection'
 
 import { db } from '../firebase/config'
-import { doc, deleteDoc } from 'firebase/firestore'
+import { doc, deleteDoc, updateDoc } from 'firebase/firestore'
 
 export default {
   name: 'Home',
@@ -36,7 +36,14 @@ export default {
       deleteDoc(docRef)
     }
 
-    return { user, handleDelete }
+    //update user info
+    const handleUpdate = (user) => {
+      const docRef = doc(db, 'user', user.id)
+
+      updateDoc(docRef, { isadmin: !user.isadmin })
+    }
+
+    return { user, handleDelete, handleUpdate }
   }
 }
 </script>
@@ -70,5 +77,9 @@ export default {
 .icon {
   color: #bbbbbb;
   cursor: pointer;
+}
+
+.icon.admin {
+  color: greenyellow;
 }
 </style>
