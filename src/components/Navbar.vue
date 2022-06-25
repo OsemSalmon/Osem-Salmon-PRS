@@ -1,50 +1,68 @@
 <template>
-  <div>
-    <nav>
-      <h1>OsemSalmonV3</h1>
-      <!-- <h4>{{ user.fullname }}</h4> -->
+    <nav class="navbar bg-light sticky-top">
+      <div class="container-fluid">
+        
+        <a class="navbar-brand material-icons" href="#">vaccines</a>
+        <span v-if="userAuth">{{ userAuth.email }}</span>
 
-      <!-- for logged in users -->
-      <div>
-        <router-link to="/">Home</router-link>
-        <button @click="handleClick">Logout</button>
+        <ul class="nav">
+          <li class="nav-item" v-if="userAuth">
+            <router-link to="/" class="nav-link active" aria-current="page"><span class="material-icons">home</span></router-link>
+          </li>
+          <li class="nav-item" v-if="userAuth">
+            <a class="nav-link btn btn-outline-light" @click="handleClick"><span class="material-icons">logout</span></a>
+          </li>
+          <li class="nav-item" v-if="!userAuth">
+            <router-link to="/login" class="nav-link">Login</router-link>
+          </li>
+        </ul>
+        <!-- <ul class="nav">        
+          <div v-if="userAuth">
+          <li class="nav-item"><router-link to="/" class="nav-link">Home</router-link></li>
+          <li class="nav-item"><a @click="handleClick" class="nav-link"><span class="material-icons">logout</span></a></li>
+            
+          </div>
+          
+          <div v-if="!userAuth">
+            <router-link to="/login" class="nav-link">Login</router-link>
+          </div>
+        </ul> -->
       </div>
-      
-      <!-- for logged out users -->
-      <div>
-        <router-link to="/login">Login</router-link>
-      </div>
-
-      
     </nav>
-  </div>
+    
 </template>
 
 <script>
 import { auth } from '../firebase/config'
 import { signOut } from '@firebase/auth'
+import { useRouter } from 'vue-router'
+import { watchEffect } from 'vue'
 
 import getUserAuth from '../composables/getUserAuth'
-import getCollection from '../composables/getCollection'
 
 export default {
   setup() {
     const { userAuth } = getUserAuth()
-    
-    const { documents: user } = getCollection('user')
+    const router = useRouter()
 
     const handleClick = () => {
       signOut(auth)
     }
 
-    return { handleClick, userAuth, user }
+    watchEffect(() => {
+      if(!userAuth.value) {
+        router.push('/login')
+      }
+    })
+
+    return { handleClick, userAuth }
   }
 
 }
 </script>
 
 <style>
-nav {
+/* nav {
   display: flex;
   align-items: center;
 }
@@ -65,5 +83,5 @@ nav a.router-link-exact-active {
 nav + p {
   margin-top: 0;
   margin-bottom: 30px;
-}
+} */
 </style>

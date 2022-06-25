@@ -1,72 +1,86 @@
 <template>
-  <form @submit.prevent="handleSubmit">
-    <h3>Add a New User</h3>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <form @submit.prevent="handleSubmit">
+          <div class="form-floating mb-3">
+            <input class="form-control" type="text" name="fullname" v-model="fullname" placeholder="fullname" required />
+            <label for="title" class="form-label">Full Name</label>
+          </div>
 
-    <label for="title">Full Name:</label>
-    <input type="text" name="fullname" v-model="fullname" required>
+          <div class="form-floating mb-3">
+            <input class="form-control" type="text" name="email" v-model="email" placeholder="email" required />
+            <label for="email" class="form-label">Email</label>
+          </div>
 
-    <label for="email">Email:</label>
-    <input type="text" name="email" v-model="email" required>
+          <div class="form-floating mb-3">
+            <input class="form-control" type="date" name="dob" v-model="dob" placeholder="Date of Birth" required />
+            <label for="dob" class="form-label">Date of Birth</label>
+          </div>
 
-    <label for="password">Password:</label>
-    <input type="password" name="password" v-model="password" required>
+          <div class="form-floating mb-3">
+            <input class="form-control" type="text" name="nric" v-model="nric" placeholder="NRIC" required />
+            <label for="nric" class="form-label">NRIC</label>
+          </div>
 
-    <button>Add User</button>
-    <div v-if="error">
+          <div class="form-floating mb-3">
+            <textarea class="form-control" name="note" v-model="note" placeholder="Note" required></textarea>
+            <label for="note" class="form-label">Note</label>
+          </div>
+
+          <br>
+          <button class="btn btn-outline-success float-end">Add Patient</button>
+          <!-- <div v-if="error">
       {{ error }}
+    </div> -->
+        </form>
+      </div>
     </div>
-  </form>
+  </div>
 </template>
 
 <script>
-import {ref} from 'vue'
-import {db} from '../firebase/config'
-import {addDoc, collection} from 'firebase/firestore'
-import { useRouter } from 'vue-router'
-
-import useSignup from '../composables/useSignup'
+import { ref } from "vue"
+import { db } from "../firebase/config"
+import { addDoc, collection } from "firebase/firestore"
 
 export default {
-  setup () {
-    const fullname = ref('')
-    const email = ref('')
-    const password = ref('')
-
-    const { signup, error } = useSignup()
-    const router = useRouter()
+  setup() {
+    const fullname = ref("")
+    const email = ref("")
+    const dob = ref("")
+    const nric = ref("")
+    const note = ref("")
 
     const handleSubmit = async () => {
-      const colRef = collection(db, 'user')
-      await signup(email.value, password.value)
-      if (!error.value) {
-        router.push('/')
-      }
-
-      else {
-        return
-      }
+      const colRef = collection(db, "user")
 
       await addDoc(colRef, {
         fullname: fullname.value,
         email: email.value,
-        isadmin: false
+        dob: dob.value,
+        nric: nric.value,
+        note: note.value,
       })
 
-      fullname.value = ''
-      email.value = ''
-      password.value = ''
+      fullname.value = ""
+      email.value = ""
+      dob.value = ""
+      nric.value = ""
+      note.value = ""
     }
 
-    return {handleSubmit, fullname, email, password, error}
-  }
-
+    return {
+      handleSubmit,
+      fullname,
+      email,
+      dob,
+      nric,
+      note,
+    }
+  },
 }
 </script>
 
 <style>
-form {
-  padding: 10px;
-  margin-top: 10px;
-  border: 1px dashed #c3c8ce;
-}
 </style>
