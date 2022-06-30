@@ -1,4 +1,29 @@
 <template>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+  Launch static backdrop modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <editPatientDetails />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Understood</button>
+      </div>
+    </div>
+  </div>
+</div>
+
     <ul class="list-group">
         <li class="list-group-item list-group-item-dark" v-for="user in user" :key="user.id">
             <div class="details">
@@ -19,7 +44,7 @@
                 Add Record
             </button>
             </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+            <div id="collapseTwo" class="accordion-collapse collapse container" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                     <form @submit.prevent="handleSubmit">
                         <div class="form-floating mb-3">
@@ -36,12 +61,11 @@
                             <textarea class="form-control" name="docNote" v-model="docNote" placeholder="Note" required></textarea>
                             <label for="docNote" class="form-label">Note</label>
                         </div>
-                        <br>
                         
-                        <div clas="form-floating mb-3">
+                        
+                        <div class="form-floating mb-3">
                             <button class="btn btn-outline-success">Add Record</button>
                         </div>
-                        
                     </form>
                 </div>
             </div>
@@ -64,17 +88,18 @@
 
 <script>
 var patientNRIC = window.location.pathname.split("/").pop()
- 
-//console.log(patientNRIC)
 
 import getCollection from "../composables/getCollection"
 import getUserAuth from '../composables/getUserAuth'
+import editPatientDetails from "@/components/editPatientDetails"
 
 import { db } from "../firebase/config"
 import { addDoc, collection } from "firebase/firestore"
 import { ref } from "vue"
 
 export default {
+    name: 'patientRecord',
+    components: { editPatientDetails },
     setup() {
         const { userAuth } = getUserAuth()
 
@@ -140,5 +165,4 @@ export default {
 </script>
 
 <style>
-
 </style>
