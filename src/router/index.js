@@ -43,7 +43,7 @@ const routes = [
     component: patientRecord
   },
   {
-    path: '/userProfile/:useruid',
+    path: '/userProfile/:uid',
     name: 'Profile',
     component: () => import('../views/userProfile.vue'),
   },

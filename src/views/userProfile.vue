@@ -14,12 +14,17 @@
       </div>
       <div class="col">
         
-
             <div class="mb-3">
                 <label class="form-label">User ID</label>
                 <input type="text" class="form-control" v-model="staff.uid" disabled>
-                <div class="form-text">You are not allowed to change this value.</div>
             </div>
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="text" class="form-control" v-model="staff.email" disabled>
+                <div class="form-text">You are not allowed to change these values.</div>
+            </div>
+        <hr/>
         <form @submit.prevent="handleUpdate(staff)">
             <div class="mb-3">
                 <label class="form-label">Name</label>
@@ -31,62 +36,29 @@
                 <input type="text" class="form-control" v-model="staff.pNumber">
             </div>
 
-            <div class="mb-3">
-                <button class="btn btn-primary float-end">Update</button>
+            <div class="mb-3 float-end">
+                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
+                Change Password
+                </button>
+                <button class="btn btn-primary ms-1">Update</button>
             </div>
         </form>
       </div>
       <div class="col-3">
         <div class="mb-3">
-
-            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-            Change Email
-            </button>
-
-            <button type="button" class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
-            Change Password
-            </button>
-
-
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    email modal
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Understood</button>
-                </div>
-                </div>
-            </div>
-            </div>
-
             <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                        <h5 class="modal-title" id="staticBackdropLabel">Change Password</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        password modal
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Understood</button>
+                        <editUserPassword/>
                     </div>
                     </div>
                 </div>
             </div>
-
-
-            <label for="exampleInputEmail1" class="form-label mt-3">Email Address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="staff.email" disabled>
         </div>         
       </div>
     </div>
@@ -100,27 +72,27 @@ import { doc, updateDoc } from "firebase/firestore"
 
 import getCollection from "../composables/getCollection"
 import getUserAuth from "../composables/getUserAuth"
+import editUserPassword from "../components/editUserPassword.vue"
 
 export default {
-    setup () {
+    setup() {
         const { userAuth } = getUserAuth()
-
-        const { documents: staff } = getCollection('staff', 
-        ['uid', '==', userAuth.value.uid])
-
+        const { documents: staff } = getCollection("staff", ["uid", "==", userAuth.value.uid])
         const handleUpdate = (staff) => {
-            const docRef = doc(db, 'staff', staff.id)
+            const docRef = doc(db, "staff", staff.id)
             updateDoc(docRef, {
                 fullname: staff.fullname,
                 pNumber: staff.pNumber,
-            })
-            alert('Profile updated')
+            });
+            alert("Profile updated")
         }
-
         return {
-            staff, userAuth, handleUpdate
+            staff,
+            userAuth,
+            handleUpdate
         }
-    }
+    },
+    components: { editUserPassword }
 }
 </script>
 
