@@ -44,8 +44,10 @@ import { ref } from "vue"
 import { db } from "../firebase/config"
 import { addDoc, collection } from "firebase/firestore"
 
+
 export default {
   setup() {
+    //patient info const
     const fullname = ref("")
     const email = ref("")
     const dob = ref("")
@@ -78,7 +80,7 @@ export default {
       nric,
       note,
     }
-  },
+  }
 }
 </script>
 

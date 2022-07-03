@@ -1,84 +1,69 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col">
-        <form @submit.prevent="handleSubmit">
-          <div class="form-floating mb-3">
-            <input class="form-control" type="text" name="fullname" v-model="fullname" placeholder="fullname" required />
-            <label for="title" class="form-label">Full Name</label>
-          </div>
+  <ul class="list-group">
+        <li class="list-group-item" v-for="user in user" :key="user.id">
+            <div class="details">
+                <span class="fs-2 fw-bold">{{ user.fullname }}</span> 
+                <span class="fs-3 fw-light ms-3">{{ user.nric }}</span>
+                <br>
+                <span class="fs-4 fw-light">{{ user.dob }}</span> 
+                <span class="fs-4 fw-light ms-3">{{ user.email }}</span>
+            </div>
+            <form @submit.prevent="handleUpdate(user)" class="mt-3">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="placeholder" placeholder="placeholder" v-model="user.fullname">
+                <label for="floatingInput">Full Name</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="placeholder" placeholder="placeholder" v-model="user.nric" disabled>
+                <label for="floatingPassword">NRIC</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="date" class="form-control" id="placeholder" placeholder="placeholder" v-model="user.dob">
+                <label for="floatingPassword">Date of Birth</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="placeholder" placeholder="placeholder" v-model="user.email">
+                <label for="floatingPassword">email</label>
+              </div>
 
-          <div class="form-floating mb-3">
-            <input class="form-control" type="text" name="email" v-model="email" placeholder="email" required />
-            <label for="email" class="form-label">Email</label>
-          </div>
-
-          <div class="form-floating mb-3">
-            <input class="form-control" type="date" name="dob" v-model="dob" placeholder="Date of Birth" required />
-            <label for="dob" class="form-label">Date of Birth</label>
-          </div>
-
-          <div class="form-floating mb-3">
-            <input class="form-control" type="text" name="nric" v-model="nric" placeholder="NRIC" required />
-            <label for="nric" class="form-label">NRIC</label>
-          </div>
-
-          <div class="form-floating mb-3">
-            <textarea class="form-control" name="note" v-model="note" placeholder="Note" required></textarea>
-            <label for="note" class="form-label">Note</label>
-          </div>
-
-          <br>
-          <button class="btn btn-outline-success float-end">Add Patient</button>
-          <!-- <div v-if="error">
-      {{ error }}
-    </div> -->
-        </form>
-      </div>
-    </div>
-  </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary">Done</button>
+              </div>
+            </form>
+        </li>
+    </ul>
 </template>
 
 <script>
-import { ref } from "vue"
+var patientNRIC = window.location.pathname.split("/").pop()
+
 import { db } from "../firebase/config"
-import { addDoc, collection } from "firebase/firestore"
+import { doc, updateDoc } from "firebase/firestore"
+import getCollection from "../composables/getCollection"
 
 export default {
   setup() {
-    const fullname = ref("")
-    const email = ref("")
-    const dob = ref("")
-    const nric = ref("")
-    const note = ref("")
+    const { documents: user } = getCollection("user", [
+      "nric",
+      "==",
+      patientNRIC,
+    ])
 
-    const handleSubmit = async () => {
-      const colRef = collection(db, "user")
+    const handleUpdate = (user) => {
+      const docRef = doc(db, 'user', user.id)
 
-      await addDoc(colRef, {
-        fullname: fullname.value,
-        email: email.value,
-        dob: dob.value,
-        nric: nric.value,
-        note: note.value,
+      updateDoc(docRef, {
+        fullname: user.fullname,
+        dob: user.dob,
+        email: user.email,
       })
-
-      fullname.value = ""
-      email.value = ""
-      dob.value = ""
-      nric.value = ""
-      note.value = ""
     }
 
     return {
-      handleSubmit,
-      fullname,
-      email,
-      dob,
-      nric,
-      note,
+      user, handleUpdate
     }
-  },
+  }
 }
 </script>
 

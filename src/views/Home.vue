@@ -57,7 +57,7 @@ import CreateUserForm from "@/components/CreateUserForm"
 import getCollection from "../composables/getCollection"
 
 import { db } from "../firebase/config"
-import { doc, deleteDoc, updateDoc } from "firebase/firestore"
+import { doc, deleteDoc } from "firebase/firestore"
 
 export default {
   name: "Home",

@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
 import { getAuth } from 'firebase/auth'
+import { getStorage } from 'firebase/storage'
 
 const firebaseConfig = {
     apiKey: "AIzaSyDtBsjrvIOUtRmcTBTfhHGhItndCwtM9QA",
@@ -8,13 +9,14 @@ const firebaseConfig = {
     projectId: "osemsalmonv3",
     storageBucket: "osemsalmonv3.appspot.com",
     messagingSenderId: "467045403887",
-    appId: "1:467045403887:web:f47b8b0e4c049e3ac05f1a"
+    appId: "1:467045403887:web:f47b8b0e4c049e3ac05f1a",
+    storageBucket: "osemsalmonv3.appspot.com"
 }
 
 initializeApp(firebaseConfig)
 
 const db = getFirestore()
 const auth = getAuth()
+const projectStorage = getStorage()
 
-
-export { db, auth }
+export { db, auth, projectStorage}

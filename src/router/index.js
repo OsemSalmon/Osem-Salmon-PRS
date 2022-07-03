@@ -5,6 +5,7 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import patientRecord from '../views/patientRecord.vue'
+import getUserAuth from '../composables/getUserAuth'
 
 import { auth } from '../firebase/config'
 
@@ -41,6 +42,16 @@ const routes = [
     name: 'Patient Record',
     component: patientRecord
   },
+  {
+    path: '/userProfile/:useruid',
+    name: 'Profile',
+    component: () => import('../views/userProfile.vue'),
+  },
+  {
+    path: '/staffRecord',
+    name: 'Staff Record',
+    component: () => import('../views/staffRecord.vue'),
+  }
 ]
 
 const router = createRouter({
