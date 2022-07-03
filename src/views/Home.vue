@@ -1,60 +1,64 @@
 <template>
-  <div class="home">
-    <div class="accordion mb-2 mt-2" id="accordionExample">
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingTwo">
-          <button
-            class="accordion-button collapsed"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#collapseTwo"
-            aria-expanded="false"
-            aria-controls="collapseTwo"
-          >
-            Add New Patient
-          </button>
-        </h2>
-        <div
-          id="collapseTwo"
-          class="accordion-collapse collapse"
-          aria-labelledby="headingTwo"
-          data-bs-parent="#accordionExample"
-        >
-          <div class="accordion-body">
-            <CreateUserForm />
+<div class="container-fluid">
+  <div class="row">
+    <div class="m-3">
+      <button type="button" class="btn btn-primary float-end me-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+      Add
+      </button>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">New Patient Registration</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <CreateUserForm/>
           </div>
         </div>
       </div>
     </div>
-    <ul class="list-group">
-      <li class="list-group-item" v-for="user in user" :key="user.id">
-        <div class="details">
-          <span class="fs-3" @click="handleUpdate(user)">{{ user.fullname }}</span>
-          <span class="ms-3">{{ user.nric }}</span>
-          <br>
-          <span>{{ user.dob }}</span>
-          <span class="ms-3">{{ user.email }}</span>
-          <br>
-          <span>{{ user.note }}</span>
-        </div>
-        <div class="d-flex justify-content-end">
-          <router-link :to="`/patientRecord/${user.nric}`" style="color: black">
-            <span class="material-icons text-end" id="editUser">edit_note</span>
-          </router-link>
 
-          <div class="icon" @click="handleDelete(user)">
-            <span class="material-icons text-end" id="deleteUser">delete</span>
-          </div>
-        </div>
-        
-      </li>
-    </ul>
   </div>
+  <div class="row">
+    <table class="table table-striped table-hover table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">NRIC</th>
+          <th scope="col">Email</th>
+          <th scope="col">Contact</th>
+          <th scope="col">Address</th>
+          <th scope="col" colspan="2">Action</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <tr v-for="user in user" :key="user.id">
+        <td>{{ user.fullname }}</td>
+        <td>{{ user.nric }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.contact }}</td>
+        <td>{{ user.address }}</td>
+        <td>
+          <router-link :to="`/patientRecord/${user.nric}`" style="color: black">
+            <i id="editUser" class="bi bi-pencil-square"></i>
+          </router-link>
+        </td>
+        <td><i id="deleteUser" class="bi bi-person-dash-fill" @click="handleDelete(user)"></i></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 </template>
 
 <script>
 import CreateUserForm from "@/components/CreateUserForm"
 import getCollection from "../composables/getCollection"
+import getUserAuth from "../composables/getUserAuth"
 
 import { db } from "../firebase/config"
 import { doc, deleteDoc } from "firebase/firestore"
@@ -63,6 +67,8 @@ export default {
   name: "Home",
   components: { CreateUserForm },
   setup() {
+
+    const { userAuth } = getUserAuth()
     //get user info from collection
     const { documents: user } = getCollection("user")
 
@@ -75,7 +81,7 @@ export default {
 
     //update user info
 
-    return { user, handleDelete }
+    return { user, handleDelete, userAuth }
   }
 }
 </script>

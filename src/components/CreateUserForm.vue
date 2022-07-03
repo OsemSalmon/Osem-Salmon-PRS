@@ -24,12 +24,25 @@
           </div>
 
           <div class="form-floating mb-3">
+            <input class="form-control" type="text" name="contact" v-model="contact" placeholder="contact" required />
+            <label for="nric" class="form-label">Contact</label>
+          </div>
+
+          <div class="form-floating mb-3">
             <textarea class="form-control" name="note" v-model="note" placeholder="Note" required></textarea>
             <label for="note" class="form-label">Note</label>
           </div>
 
+          <div class="form-floating mb-3">
+            <textarea class="form-control" name="address" v-model="address" placeholder="address" required></textarea>
+            <label for="note" class="form-label">Address</label>
+          </div>        
+
           <br>
-          <button class="btn btn-outline-success float-end">Add Patient</button>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button class="btn btn-primary">Add New Patient</button>
+          </div>
           <!-- <div v-if="error">
       {{ error }}
     </div> -->
@@ -53,6 +66,8 @@ export default {
     const dob = ref("")
     const nric = ref("")
     const note = ref("")
+    const contact = ref("")
+    const address = ref("")
 
     const handleSubmit = async () => {
       const colRef = collection(db, "user")
@@ -63,13 +78,19 @@ export default {
         dob: dob.value,
         nric: nric.value,
         note: note.value,
+        contact: contact.value,
+        address: address.value
       })
+
+      alert("Patient added successfully")
 
       fullname.value = ""
       email.value = ""
       dob.value = ""
       nric.value = ""
       note.value = ""
+      contact.value = ""
+      address.value = ""
     }
 
     return {
@@ -79,6 +100,8 @@ export default {
       dob,
       nric,
       note,
+      contact,
+      address
     }
   }
 }

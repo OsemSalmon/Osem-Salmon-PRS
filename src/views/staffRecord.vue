@@ -1,4 +1,5 @@
 <template>
+<div class="container">
 <div class="table">
     <thead>
         <tr>
@@ -18,18 +19,22 @@
         </tr>
     </tbody>
 </div>
+</div>
 </template>
 
 <script>
 import getCollection from "../composables/getCollection"
+import getUserAuth from "../composables/getUserAuth"
 
 export default {
     setup() {
-        const { documents: staff } = getCollection("staff")
+        const { userAuth } = getUserAuth()
 
+        const { documents: staff } = getCollection("staff")
+  
 
         //return
-        return { staff }
+        return { staff, userAuth }
     }
 }
 </script>
