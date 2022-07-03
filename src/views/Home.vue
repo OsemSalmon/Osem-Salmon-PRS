@@ -1,9 +1,10 @@
 <template>
 <div class="container-fluid">
+  
   <div class="row">
     <div class="m-3">
       <button type="button" class="btn btn-primary float-end me-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-      Add
+      <i class="bi bi-plus-square"></i>
       </button>
     </div>
 
@@ -53,6 +54,14 @@
     </table>
   </div>
 </div>
+<div v-for="staff in staff" :key="staff.id">
+<div v-if="!staff.isApproved">
+<head>
+  <meta http-equiv = "refresh" content = "0; url = /accessDenied" />
+</head>
+</div>
+</div>
+
 </template>
 
 <script>
@@ -72,6 +81,9 @@ export default {
     //get user info from collection
     const { documents: user } = getCollection("user")
 
+    const { documents: staff } = getCollection("staff",
+    ['uid', '==', userAuth.value.uid])
+
     //delete user from collection
     const handleDelete = (user) => {
       const docRef = doc(db, "user", user.id)
@@ -81,7 +93,7 @@ export default {
 
     //update user info
 
-    return { user, handleDelete, userAuth }
+    return { user, handleDelete, userAuth, staff }
   }
 }
 </script>

@@ -1,9 +1,68 @@
 <template>
-
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-  Edit
-</button>
+<div class="container-fluid">
+    <div class="row">
+        <div>
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">NRIC</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Contact</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Note</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    <tr v-for="user in user" :key="user.id">
+                    <td>{{ user.fullname }}</td>
+                    <td>{{ user.nric }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.contact }}</td>
+                    <td>{{ user.address }}</td>
+                    <td>{{ user.note }}</td>
+                    <td>
+                    <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    <i class="bi bi-pencil-square"></i>
+                    </button>
+                    </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div>
+        <table class="table table-striped table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Doctor</th>
+                    <th scope="col">Illness</th>
+                    <th scope="col">Ailment(s)</th>
+                    <th scope="col">Remarks</th>
+                    <th>
+                    <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
+                    <i class="bi bi-plus-square"></i>
+                    </button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <tr v-for="visit in visit" :key="visit.id">
+                <td>{{ visit.date }}</td>
+                <td>{{ visit.docName }}</td>
+                <td>{{ visit.illness }}</td>
+                <td>{{ visit.ailment }}</td>
+                <td>{{ visit.remarks }}</td>
+                <td></td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -20,66 +79,52 @@
   </div>
 </div>
 
-    <ul class="list-group">
-        <li class="list-group-item list-group-item-dark" v-for="user in user" :key="user.id">
-            <div class="details">
-                <span class="fs-2 fw-bold">{{ user.fullname }}</span> 
-                <span class="fs-3 fw-light ms-3">{{ user.nric }}</span>
-                <br>
-                <span class="fs-4 fw-light">{{ user.dob }}</span> 
-                <span class="fs-4 fw-light ms-3">{{ user.email }}</span>
-                
+<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">New Visitation Record</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form @submit.prevent="handleSubmit">
+            <div class="form-floating mb-3">
+                <input class="form-control" type="date" name="date" v-model="date" placeholder="date" required />
+                <label for="date" class="form-label">Date</label>
             </div>
-        </li>
-    </ul>
 
-    <div class="accordion mt-1 mb-1">
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingTwo">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                Add Record
-            </button>
-            </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse container" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    <form @submit.prevent="handleSubmit">
-                        <div class="form-floating mb-3">
-                            <input class="form-control" type="date" name="date" v-model="date" placeholder="date" required />
-                            <label for="date" class="form-label">Date</label>
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <input class="form-control" type="text" name="docName" v-model="userAuth.email" required readonly />
-                            <label for="docName" class="form-label">Doctor</label>
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <textarea class="form-control" name="docNote" v-model="docNote" placeholder="Note" required></textarea>
-                            <label for="docNote" class="form-label">Note</label>
-                        </div>
-                        
-                        
-                        <div class="form-floating mb-3">
-                            <button class="btn btn-outline-success">Add Record</button>
-                        </div>
-                    </form>
-                </div>
+            <div class="form-floating mb-3">
+                <input class="form-control" type="text" name="docName" v-model="userAuth.email" required readonly />
+                <label for="docName" class="form-label">Doctor</label>
             </div>
-        </div>
 
+            <div class="form-floating mb-3">
+                <input class="form-control" type="text" name="illness" v-model="illness" placeholder="Illness" required />
+                <label for="illness" class="form-label">Illness</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input class="form-control" type="text" name="ailment" v-model="ailment" placeholder="Ailment" required />
+                <label for="ailment" class="form-label">Ailment(s)</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <textarea class="form-control" name="remarks" v-model="remarks" placeholder="remarks" required></textarea>
+                <label for="remarks" class="form-label">Remarks</label>
+            </div>
+            
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary">Add New Record</button>
+            </div>
+        </form>
+      </div>
+      
     </div>
+  </div>
+</div>
 
-    <ul class="list-group">
-        <li class="list-group-item list-group-item-light" v-for="visit in visit" :key="visit.id">
-            <div class="details">
-                <span class="fw-semibold">Date:</span> <span class="fw-light">{{ visit.date }}</span>
-                <br>
-                <span class="fw-semibold">Note:</span> <span class="fw-light">{{ visit.docNote }}</span>
-                <br>
-                <span class="fw-semibold">Doctor:</span> <span class="fw-light">{{ visit.docName }}</span>
-            </div>
-        </li>
-    </ul>
 </template>
 
 <script>
@@ -99,12 +144,12 @@ export default {
     setup() {
         const { userAuth } = getUserAuth()
 
-        var currentDoc = userAuth.value.email
-
         const date = ref('')
-        const docNote = ref('')
+        const remarks = ref('')
         const docName = ref('')
         const nric = ref('')
+        const illness = ref('')
+        const ailment = ref('')
 
         const { documents: visit } = getCollection(
             'visit',
@@ -121,15 +166,19 @@ export default {
 
             await addDoc(colRef, {
                 date: date.value,
-                docName: currentDoc,
-                docNote: docNote.value,
-                nric: patientNRIC
+                docName: userAuth.value.email,
+                remarks: remarks.value,
+                nric: patientNRIC,
+                illness: illness.value,
+                ailment: ailment.value,
             })
 
             date.value = ''
             docName.value = ''
-            docNote.value = ''
+            remarks.value = ''
             nric.value = ''
+            illness.value = ''
+            ailment.value = ''
         }
 
         return { 
@@ -139,8 +188,10 @@ export default {
             userAuth,
             date,
             docName,
-            docNote,
-            nric 
+            remarks,
+            nric,
+            illness,
+            ailment,
         }
     },
 

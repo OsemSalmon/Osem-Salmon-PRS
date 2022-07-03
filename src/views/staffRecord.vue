@@ -1,6 +1,6 @@
 <template>
-<div class="container">
-<div class="table">
+<div class="container-fluid">
+<table class="table">
     <thead>
         <tr>
             <th scope="col">Email</th>
@@ -18,7 +18,7 @@
             <td>{{ staff.isApproved }}</td>
         </tr>
     </tbody>
-</div>
+</table>
 </div>
 </template>
 
