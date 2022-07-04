@@ -11,8 +11,9 @@
     "bootstrap": "^5.2.0-beta1",
     "bootstrap-icons": "^1.8.3",
     "core-js": "^3.6.5",
-    "firebase": "^9.8.3",
+    "firebase": "^9.8.4",
     "firebase-admin": "^11.0.0",
+    "g": "^2.0.1",
     "vue-router": "^4.0.0-0"
   },
   "devDependencies": {

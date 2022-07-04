@@ -1,8 +1,8 @@
 <template>
-  <div class="container">
+  <div class="container border rounded-3 mt-3">
     <div class="row">
       <div class="col"></div>
-      <div class="col pt-5">
+      <div class="col m-3">
         <form @submit.prevent="handleSubmit">
           <h1 class="display-6 mb-3">Login</h1>
 
@@ -30,8 +30,7 @@
             <label for="password" class="form-label">Password</label>
           </div>
 
-          <button class="btn btn-primary float-end">Login</button>
-          <button class="btn btn-outline-danger float-end me-1">Forgot Password?</button>
+          <button class="btn btn-primary btn-block float-end">Login</button>
           <div v-if="error">
             <h6><small class="text-muted">{{ error }}</small></h6>
           </div>

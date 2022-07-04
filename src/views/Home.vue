@@ -2,10 +2,17 @@
 <div class="container-fluid">
   
   <div class="row">
+    
     <div class="m-3">
       <button type="button" class="btn btn-primary float-end me-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
       <i class="bi bi-plus-square"></i>
       </button>
+      <div v-for="staff in staff" :key="staff.id">
+        <form @submit.prevent="handleUpdate(staff)">
+        <button class="btn btn-outline-dark float-end me-3"><i class="bi bi-arrow-repeat"></i></button>
+        </form>
+      </div>
+      
     </div>
 
     <!-- Modal -->
@@ -25,6 +32,7 @@
 
   </div>
   <div class="row">
+    
     <table class="table table-striped table-hover table-bordered">
       <thead>
         <tr>
@@ -70,7 +78,7 @@ import getCollection from "../composables/getCollection"
 import getUserAuth from "../composables/getUserAuth"
 
 import { db } from "../firebase/config"
-import { doc, deleteDoc } from "firebase/firestore"
+import { doc, deleteDoc, updateDoc } from "firebase/firestore"
 
 export default {
   name: "Home",
@@ -82,7 +90,7 @@ export default {
     const { documents: user } = getCollection("user")
 
     const { documents: staff } = getCollection("staff",
-    ['uid', '==', userAuth.value.uid])
+    ['email', '==', userAuth.value.email])
 
     //delete user from collection
     const handleDelete = (user) => {
@@ -92,8 +100,14 @@ export default {
     }
 
     //update user info
+    const handleUpdate = (staff) => {
+      const docRef = doc(db, "staff", staff.id)
+      updateDoc(docRef, {
+        uid: userAuth.value.uid
+      })
+    }
 
-    return { user, handleDelete, userAuth, staff }
+    return { user, handleDelete, userAuth, staff, handleUpdate }
   }
 }
 </script>

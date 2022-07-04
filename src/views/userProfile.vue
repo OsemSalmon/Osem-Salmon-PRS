@@ -1,6 +1,6 @@
 <template>
-  <div class="container" v-for="staff in staff" :key="staff.id">
-    <div class="row">
+  <div class="container border rounded-3 mt-4 " v-for="staff in staff" :key="staff.id">
+    <div class="row mt-3">
       <div class="col">
         <h1 class="display-6">Profile</h1>
       </div>
@@ -34,6 +34,11 @@
             <div class="mb-3">
                 <label class="form-label">Contact Number</label>
                 <input type="text" class="form-control" v-model="staff.pNumber">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Address</label>
+                <input type="text" class="form-control" v-model="staff.address">
             </div>
 
             <div class="mb-3 float-end">
@@ -83,6 +88,7 @@ export default {
             updateDoc(docRef, {
                 fullname: staff.fullname,
                 pNumber: staff.pNumber,
+                address: staff.address
             });
             alert("Profile updated")
         }

@@ -32,6 +32,7 @@
             </table>
         </div>
     </div>
+    <hr/>
     <div class="row">
         <div>
         <table class="table table-striped table-hover table-bordered">

@@ -2,33 +2,35 @@
     <nav class="navbar bg-light sticky-top">
       <div class="container-fluid">
         
-        <a class="navbar-brand material-icons" href="#">vaccines</a>
+        <a class="navbar-brand" href="#">
+          <img src="../../logo.png" alt="" width="160" height="60">
+        </a>
+
         <span v-if="userAuth">{{ userAuth.email }}</span>
 
         <ul class="nav">
-          <li class="nav-item" v-if="userAuth">
-            <router-link to="/" class="nav-link active" aria-current="page"><span class="material-icons">home</span></router-link>
+
+          <li class="nav-item ms-1 me-1" v-if="userAuth">
+            <router-link to="/" class="btn btn-outline-dark" aria-current="page"><i class="bi bi-house-door"></i> Home</router-link>
           </li>
 
-          <li class="nav-item" v-if="userAuth">
-            <router-link :to="`/userProfile/${userAuth.uid}`" class="nav-link active" aria-current="page"><span class="material-icons">account_circle</span></router-link>
-          </li>
-          <form v-for="staff in staff" :key="staff.id" @submit.prevent="handleUpdate(staff)">
-          <button></button>
-          </form>
-          <li class="nav-item" v-if="userAuth">
-            <router-link to="/staffRecord" class="nav-link active" aria-current="page"><span class="material-icons">group</span></router-link>
+          <li class="nav-item ms-1 me-1" v-if="userAuth">
+            <router-link to="/staffRecord" class="btn btn-outline-dark" aria-current="page"><i class="bi bi-table"></i> Staff</router-link>
           </li>
 
-          <li class="nav-item" v-if="userAuth">
-            <a class="nav-link btn btn-outline-light" @click="handleClick"><span class="material-icons">logout</span></a>
+          <li class="nav-item ms-1 me-1" v-if="userAuth">
+            <router-link :to="`/userProfile/${userAuth.uid}`" class="btn btn-outline-dark" aria-current="page"><i class="bi bi-person-lines-fill"></i> Profile</router-link>
+          </li>
+
+          <li class="nav-item ms-1 me-1" v-if="userAuth">
+            <a class="btn btn-outline-danger" @click="handleClick"><i class="bi bi-box-arrow-in-right"></i></a>
           </li>
           
-          <li class="nav-item" v-if="!userAuth">
-            <router-link to="/login" class="nav-link">Login</router-link>
+          <li class="nav-item ms-1 me-1" v-if="!userAuth">
+            <router-link to="/login" class="btn btn-outline-dark"><i class="bi bi-box-arrow-in-right"></i> Login</router-link>
           </li>
-          <li class="nav-item" v-if="!userAuth">
-            <router-link to="/signup" class="nav-link">Sign Up</router-link>
+          <li class="nav-item ms-1 me-1" v-if="!userAuth">
+            <router-link to="/signup" class="btn btn-outline-dark"><i class="bi bi-box-arrow-in-down"></i> Sign Up</router-link>
           </li>
         </ul>  
       </div>
@@ -53,16 +55,6 @@ export default {
     const router = useRouter()
     const route = useRoute()
 
-    const { documents: staff } = getCollection("staff",
-    ['email', '==', userAuth.value.email])
-
-    const handleUpdate = (staff) => {
-      const docRef = doc(db, "staff", staff.id)
-      updateDoc(docRef, {
-        uid: userAuth.value.uid
-      })
-    }
-
     const handleClick = () => {
       signOut(auth)
       router.push('/login')
@@ -76,7 +68,7 @@ export default {
       }
     })
 
-    return { handleClick, userAuth, staff, handleUpdate }
+    return { handleClick, userAuth, }
   }
 }
 </script>
