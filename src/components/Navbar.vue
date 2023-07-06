@@ -11,7 +11,7 @@
         <ul class="nav">
 
           <li class="nav-item ms-1 me-1" v-if="userAuth">
-            <router-link to="/" class="btn btn-outline-dark" aria-current="page"><i class="bi bi-house-door"></i> Home</router-link>
+            <router-link to="/" class="btn btn-outline-dark" aria-current="page"><i class="bi bi-house-door"></i> Homey</router-link>
           </li>
 
           <li class="nav-item ms-1 me-1" v-if="userAuth">
