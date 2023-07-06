@@ -30,7 +30,7 @@
             <router-link to="/login" class="btn btn-outline-dark"><i class="bi bi-box-arrow-in-right"></i> Login</router-link>
           </li>
           <li class="nav-item ms-1 me-1" v-if="!userAuth">
-            <router-link to="/signup" class="btn btn-outline-dark"><i class="bi bi-box-arrow-in-down"></i> Sign Up</router-link>
+            <router-link to="/signup" class="btn btn-outline-dark"><i class="bi bi-box-arrow-in-down"></i> Sign Uppy</router-link>
           </li>
         </ul>  
       </div>
